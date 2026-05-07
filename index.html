@@ -36,6 +36,22 @@
             border-right: 1px solid var(--sidebar-border);
             overflow-y: auto;
         }
+        #sidebar.compact-mode {
+            width: 290px;
+            padding: 16px 14px;
+        }
+        #sidebar.compact-mode .policy-box {
+            margin: 0 0 10px;
+            padding: 10px 10px;
+        }
+        #sidebar.compact-mode .policy-box h3 {
+            font-size: 0.92rem;
+            margin-bottom: 6px;
+        }
+        #sidebar.compact-mode .policy-box p {
+            font-size: 0.82rem;
+            line-height: 1.35;
+        }
         #sidebar h1 {
             margin: 0 0 10px;
             font-size: 2rem;
@@ -78,9 +94,17 @@
             border: 1px solid rgba(107, 174, 214, 0.18);
             border-radius: 10px;
         }
+        #sidebar.compact-mode #legend {
+            margin-top: 10px;
+            padding: 10px;
+        }
         #legend h4 {
             margin: 0 0 12px;
             font-size: 0.98rem;
+        }
+        #sidebar.compact-mode #legend h4 {
+            margin: 0 0 7px;
+            font-size: 0.83rem;
         }
         .legend-row {
             display: flex;
@@ -90,12 +114,21 @@
             color: #d9e3ed;
             font-size: 0.93rem;
         }
+        #sidebar.compact-mode .legend-row {
+            gap: 7px;
+            margin: 0 0 5px;
+            font-size: 0.79rem;
+        }
         .sq {
             width: 16px;
             height: 16px;
             border-radius: 3px;
             border: 1px solid rgba(255, 255, 255, 0.18);
             flex: 0 0 auto;
+        }
+        #sidebar.compact-mode .sq {
+            width: 12px;
+            height: 12px;
         }
         .legend-divider {
             margin: 14px 0 12px;
@@ -107,6 +140,10 @@
             align-items: end;
             gap: 14px;
             margin-top: 8px;
+        }
+        #sidebar.compact-mode .height-legend {
+            gap: 8px;
+            margin-top: 4px;
         }
         .height-item {
             display: flex;
@@ -131,20 +168,44 @@
         .height-bar.high {
             height: 52px;
         }
+        #sidebar.compact-mode .height-bar {
+            width: 12px;
+        }
+        #sidebar.compact-mode .height-bar.low {
+            height: 12px;
+        }
+        #sidebar.compact-mode .height-bar.mid {
+            height: 22px;
+        }
+        #sidebar.compact-mode .height-bar.high {
+            height: 32px;
+        }
         .height-label {
             color: #d9e3ed;
             font-size: 0.88rem;
             line-height: 1.35;
+        }
+        #sidebar.compact-mode .height-label {
+            font-size: 0.72rem;
+            line-height: 1.2;
         }
         .height-label strong {
             display: block;
             color: #eef4fb;
             font-size: 0.9rem;
         }
+        #sidebar.compact-mode .height-label strong {
+            font-size: 0.75rem;
+        }
         #legend p {
             margin: 10px 0 0;
             color: var(--text-muted);
             font-size: 0.9rem;
+        }
+        #sidebar.compact-mode #legend p {
+            margin-top: 6px;
+            font-size: 0.74rem;
+            line-height: 1.25;
         }
         #map {
             position: relative;
@@ -243,21 +304,21 @@
 <body>
     <div id="dashboard">
         <div id="sidebar">
-            <h1>Spatial Disparities in Organ Donation Efficiency</h1>
-            <p class="byline">Lauren Dick-Peddie</p>
-            <p class="subtitle">A Bivariate Analysis of the Upper Midwest</p>
+            <h1 id="sidebar-title">Spatial Disparities in Organ Donation Efficiency</h1>
+            <p id="sidebar-byline" class="byline">Lauren Dick-Peddie</p>
+            <p id="sidebar-subtitle" class="subtitle">A Bivariate Analysis of the Upper Midwest</p>
 
-            <div class="policy-box" style="border-left: 10px solid #dc3545;">
+            <div id="policy-sd" class="policy-box" style="border-left: 10px solid #dc3545;">
                 <h3>Score 1: South Dakota</h3>
                 <p><b>Baseline Environment:</b> Minimal intervention. Relies on organic awareness. Lower spikes suggest lack of policy correlates with slower waitlist mitigation.</p>
             </div>
 
-            <div class="policy-box" style="border-left: 10px solid #ffc107;">
+            <div id="policy-nd" class="policy-box" style="border-left: 10px solid #ffc107;">
                 <h3>Score 2: North Dakota</h3>
                 <p><b>Strategic Support:</b> Targeted rural programs. removal of administrative hurdles leads to "skyscrapers" where policy meets low demand.</p>
             </div>
 
-            <div class="policy-box" style="border-left: 10px solid #28a745;">
+            <div id="policy-mn" class="policy-box" style="border-left: 10px solid #28a745;">
                 <h3>Score 3: Minnesota</h3>
                 <p><b>Comprehensive Framework:</b> Aggressive mandates and registry integration. High participation (darker colors) proves policy stabilizes systems under pressure.</p>
             </div>

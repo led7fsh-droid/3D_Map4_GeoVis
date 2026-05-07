@@ -230,6 +230,36 @@ const STORYMAP_VIEWS = {
 let labelsVisible = true;
 let labelLayerIds = [];
 
+function updateSidebarForView(viewName) {
+    const normalizedView = normalizeStorymapViewName(viewName) || 'GLOBAL';
+    const sidebar = document.getElementById('sidebar');
+    const title = document.getElementById('sidebar-title');
+    const byline = document.getElementById('sidebar-byline');
+    const subtitle = document.getElementById('sidebar-subtitle');
+    const policyPanels = {
+        SD: document.getElementById('policy-sd'),
+        ND: document.getElementById('policy-nd'),
+        MN: document.getElementById('policy-mn')
+    };
+
+    const isStateFocus = ['MN', 'ND', 'SD'].includes(normalizedView);
+
+    if (title) title.style.display = isStateFocus ? 'none' : '';
+    if (byline) byline.style.display = isStateFocus ? 'none' : '';
+    if (subtitle) subtitle.style.display = isStateFocus ? 'none' : '';
+
+    if (sidebar) {
+        sidebar.classList.toggle('compact-mode', isStateFocus);
+    }
+
+    Object.entries(policyPanels).forEach(([key, panel]) => {
+        if (!panel) return;
+        panel.style.display = isStateFocus
+            ? (key === normalizedView ? '' : 'none')
+            : '';
+    });
+}
+
 function syncStateButtons() {
     STATES_CONFIG.forEach(({ key, label }) => {
         const btn = document.getElementById(`toggle-${label}`);
@@ -285,6 +315,8 @@ function applyStorymapView(viewName, options = {}) {
         essential: true,
         duration
     });
+
+    updateSidebarForView(normalizedView);
 
     return true;
 }
@@ -587,6 +619,8 @@ map.on('load', async () => {
             } else {
                 applyStorymapView(requestedView);
             }
+        } else {
+            updateSidebarForView('GLOBAL');
         }
     };
 
