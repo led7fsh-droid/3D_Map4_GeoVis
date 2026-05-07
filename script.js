@@ -206,17 +206,17 @@ const STORYMAP_VIEWS = {
         labelsVisible: true
     },
     MN: {
-        camera: { center: [-94.5, 46.3], zoom: 6.2, pitch: 55, bearing: 10 },
+        camera: { center: [-94.2, 46.5], zoom: 5.8, pitch: 48, bearing: 6 },
         activeStates: ['Minnesota'],
         labelsVisible: true
     },
     ND: {
-        camera: { center: [-101, 47.5], zoom: 6.2, pitch: 60, bearing: -15 },
+        camera: { center: [-100.2, 47.5], zoom: 5.8, pitch: 50, bearing: -8 },
         activeStates: ['North Dakota'],
         labelsVisible: true
     },
     SD: {
-        camera: { center: [-100.2, 44.4], zoom: 6.2, pitch: 50, bearing: 5 },
+        camera: { center: [-99.9, 44.4], zoom: 5.8, pitch: 48, bearing: 4 },
         activeStates: ['South Dakota'],
         labelsVisible: true
     },
@@ -579,7 +579,14 @@ map.on('load', async () => {
     const syncFromUrl = () => {
         const requestedView = getRequestedStorymapView();
         if (requestedView) {
-            applyStorymapView(requestedView);
+            const normalizedView = normalizeStorymapViewName(requestedView);
+            if (normalizedView && normalizedView !== 'GLOBAL') {
+                // Start from overview so state-specific URLs always show a clear fly-in.
+                map.jumpTo({ ...STORYMAP_VIEWS.GLOBAL.camera });
+                applyStorymapView(normalizedView, { duration: 4200 });
+            } else {
+                applyStorymapView(requestedView);
+            }
         }
     };
 
