@@ -216,7 +216,7 @@ const STORYMAP_VIEWS = {
         labelsVisible: true
     },
     SD: {
-        camera: { center: [-99.9, 44.4], zoom: 5.8, pitch: 48, bearing: 4 },
+        camera: { center: [-100.1, 43.95], zoom: 5.45, pitch: 40, bearing: 4 },
         activeStates: ['South Dakota'],
         labelsVisible: true
     },
@@ -301,6 +301,8 @@ function applyStorymapView(viewName, options = {}) {
 
     const preset = STORYMAP_VIEWS[normalizedView];
     const duration = Number.isFinite(options.duration) ? options.duration : 3500;
+    const isStateFocus = ['MN', 'ND', 'SD'].includes(normalizedView);
+    const shouldForceFlyIn = isStateFocus && options.forceFlyIn !== false;
 
     if (Array.isArray(preset.activeStates)) {
         setActiveStates(preset.activeStates);
@@ -308,6 +310,11 @@ function applyStorymapView(viewName, options = {}) {
 
     if (typeof preset.labelsVisible === 'boolean') {
         setLabelsVisible(preset.labelsVisible);
+    }
+
+    if (shouldForceFlyIn) {
+        // Reset to overview so each focused state transition shows a visible fly-in.
+        map.jumpTo({ ...STORYMAP_VIEWS.GLOBAL.camera });
     }
 
     map.flyTo({
@@ -355,7 +362,7 @@ function handleStorymapRemoteMessage(data) {
         return false;
     }
 
-    if (data.view && applyStorymapView(data.view, { duration: data.duration })) {
+    if (data.view && applyStorymapView(data.view, { duration: data.duration, forceFlyIn: true })) {
         return true;
     }
 
@@ -611,14 +618,7 @@ map.on('load', async () => {
     const syncFromUrl = () => {
         const requestedView = getRequestedStorymapView();
         if (requestedView) {
-            const normalizedView = normalizeStorymapViewName(requestedView);
-            if (normalizedView && normalizedView !== 'GLOBAL') {
-                // Start from overview so state-specific URLs always show a clear fly-in.
-                map.jumpTo({ ...STORYMAP_VIEWS.GLOBAL.camera });
-                applyStorymapView(normalizedView, { duration: 4200 });
-            } else {
-                applyStorymapView(requestedView);
-            }
+            applyStorymapView(requestedView, { duration: 4200, forceFlyIn: true });
         } else {
             updateSidebarForView('GLOBAL');
         }
